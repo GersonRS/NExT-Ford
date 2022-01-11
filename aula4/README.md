@@ -42,7 +42,7 @@ p2.Push(x)
 
 ### Dado o estado inicial das pilhas p1, p2 e p3 na figura abaixo, mostre (desenhe as pilhas) o estado final dessas mesmas pilhas após as operações descritas no código abaixo. Considere que p1, p2 e p3 sejam instâncias da classe PilhaEncadeada (pilha com alocação dinamica) Caso não seja possível realizar alguma operação, escreva que não foi possível e ignore-a:
 
-![questão3](img.png "questão3")
+![questão3](../aula4/img.png)
 
 ```
 temp = p1.pop()
