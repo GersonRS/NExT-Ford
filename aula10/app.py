@@ -75,9 +75,9 @@ if __name__ == '__main__':
     elif option == 2:
         marca = input('Digite o modelo do carro que quer alterar: ')
     elif option == 3:
-        pass
+        carro = input('Digite o modelo do carro que quer exibir: ')
     elif option == 4:
-        pass
+        carro = input('Digite o modelo do carro que quer deletar: ')
     elif option == 5:
         print(lista_carros(connector))
     else:
