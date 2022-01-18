@@ -42,15 +42,15 @@ def desconnect(cnx):
 if __name__ == '__main__':
     connector = connection()
     create_table(connector)
-    # marca = input('Digite a marca do carro: ')
-    # modelo = input('Digite a modelo do carro: ')
-    # ano = input('Digite a ano do carro: ')
-    # valor = input('Digite a valor do carro: ')
-    # insert_car(connector, {
-    #   'marca': marca,
-    #   'modelo': modelo,
-    #   'ano': ano,
-    #   'valor': valor
-    # })
+    marca = input('Digite a marca do carro: ')
+    modelo = input('Digite a modelo do carro: ')
+    ano = input('Digite a ano do carro: ')
+    valor = input('Digite a valor do carro: ')
+    insert_car(connector, {
+      'marca': marca,
+      'modelo': modelo,
+      'ano': ano,
+      'valor': valor
+    })
     print(lista_carros(connector))
     desconnect(connector)
