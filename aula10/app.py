@@ -36,6 +36,10 @@ def delete_car(cnx, car):
     pass
 
 
+def search_car(cnx, id):
+    pass
+
+
 def lista_carros(cnx):
     cursor = cnx.cursor()
     query = ('select * from carro')
@@ -73,9 +77,9 @@ if __name__ == '__main__':
     elif option == 3:
         pass
     elif option == 4:
-      pass
+        pass
     elif option == 5:
-      print(lista_carros(connector))
+        print(lista_carros(connector))
     else:
-      print('Digite uma opção valida, na proxima vez!')
+        print('Digite uma opção valida, na proxima vez!')
     desconnect(connector)
