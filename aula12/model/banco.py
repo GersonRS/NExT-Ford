@@ -37,7 +37,7 @@ def update_car(car):
     cursor = get_connection().cursor()
     query = (
         'UPDATE carro SET marca = %s, modelo = %s, ano = %s, valor = %s WHERE id = %s')
-    data = (car['marca'], car['modelo'], car['ano'], car['valor'], car['id'])
+    data = (car.marca, car.modelo, car.ano, car.valor, car.id)
     cursor.execute(query, data)
     get_connection().commit()
     return cursor.lastrowid

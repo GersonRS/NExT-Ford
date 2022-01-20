@@ -9,6 +9,7 @@
             <th>Modelo</th>
             <th>Ano</th>
             <th>Valor</th>
+            <th>Ação</th>
         </tr>
     </thead>
     <tbody>
@@ -19,6 +20,7 @@
             <td>{{ carro.modelo }}</td>
             <td>{{ carro.ano }}</td>
             <td>{{ carro.valor }}</td>
+            <td><a class="btn btn-primary" href="/atualizar/{{carro.id}}" role='button'>Atualizar</a></td>
         </tr>
         {% endfor %}
     </tbody>
