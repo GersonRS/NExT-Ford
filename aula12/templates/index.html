@@ -1,0 +1,28 @@
+{% extends "template.html" %}
+<!-- criamos um bloco de conteúdo a ser interpretado pelo python -->
+{% block conteudo %}
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Ano</th>
+            <th>Valor</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for carro in carros %}
+        <tr>
+            <td>{{ carro.id }}</td>
+            <td>{{ carro.marca }}</td>
+            <td>{{ carro.modelo }}</td>
+            <td>{{ carro.ano }}</td>
+            <td>{{ carro.valor }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a class="btn btn-primary" href="/novo" role='button'>Novo</a>
+{% endblock %}

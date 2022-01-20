@@ -1,4 +1,5 @@
 import mysql.connector as connector
+from .modelos import Carro
 # sistema de concessionaria
 __connection = None
 
@@ -26,7 +27,7 @@ def create_table():
 def insert_car(car):
     cursor = get_connection().cursor()
     insert = ('INSERT INTO carro(marca, modelo, ano, valor) VALUES(%s, %s, %s, %s)')
-    data = (car['marca'], car['modelo'], car['ano'], car['valor'])
+    data = (car.marca, car.modelo, car.ano, car.valor)
     cursor.execute(insert, data)
     get_connection().commit()
     return cursor.lastrowid
@@ -63,8 +64,10 @@ def lista_carros():
     cursor = get_connection().cursor()
     query = ('select * from carro')
     cursor.execute(query)
-    # return cursor.fetchmany(size=2)
-    return cursor.fetchall()
+    lista = []
+    for (id, marca, modelo, ano, valor) in cursor:
+        lista.append(Carro(id,marca,modelo,ano,valor))
+    return lista
 
 
 def desconnect():

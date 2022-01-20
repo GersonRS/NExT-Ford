@@ -1,0 +1,27 @@
+{% extends "template.html" %}
+
+{% block conteudo %}
+<form action="{{url_for('criar')}}" method="post">
+
+    <fieldset>
+        <div class="from-group">
+            <label for="marca">Marca</label>
+            <input type="text" id="marca" name="marca" class="from-control">
+        </div>
+        <div class="from-group">
+            <label for="modelo">Modelo</label>
+            <input type="text" id="modelo" name="modelo" class="from-control">
+        </div>
+        <div class="from-group">
+            <label for="ano">Ano</label>
+            <input type="text" id="ano" name="ano" class="from-control">
+        </div>
+        <div class="from-group">
+            <label for="valor">Valor</label>
+            <input type="text" id="valor" name="valor" class="from-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Cadastra novo Carro</button>
+    </fieldset>
+
+</form>
+{% endblock %}
