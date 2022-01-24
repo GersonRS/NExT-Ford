@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, abort, request
+from flask import Flask, jsonify, abort, make_response, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 
@@ -23,12 +23,6 @@ def list_cars():
     )
 
 
-@app.route('/cars/<car_id>', methods=['GET'])
-def search_car(car_id):
-    car = Car.query.filter_by(id=car_id).first() or abort(404)
-    return jsonify(car.to_dict())
-
-
 @app.route('/cars', methods=['POST'])
 def create_car():
     data = request.json
@@ -45,27 +39,38 @@ def create_car():
     return jsonify({"success": True, "response": "Car added"})
 
 
+@app.route('/cars/<car_id>', methods=['GET'])
+def retrive_car(car_id):
+    car = Car.query.filter_by(id=car_id).first() or abort(404)
+    return jsonify(car.to_dict())
+
+
 @app.route('/cars/<car_id>', methods=['PUT'])
 def update_car(car_id):
     car = Car.query.filter_by(id=car_id).first() or abort(404)
 
-    data = request.json
+    data = request.get_json()
 
-    if data['brand']:
-        car.brand = data['brand']
-
-    if data['model']:
-        car.model = data['model']
-
-    if data['year']:
-        car.year = data['year']
-
-    if data['value']:
-        car.value = data['value']
+    if data.get('brand'):
+        car.brand = data.get('brand')
+    if data.get('model'):
+        car.model = data.get('model')
+    if data.get('year'):
+        car.year = data.get('year')
+    if data.get('value'):
+        car.value = data.get('value')
 
     db.session.add(car)
     db.session.commit()
 
+    return jsonify(car.to_dict())
+
+
+@app.route('/cars/<car_id>', methods=['DELETE'])
+def delete_car(car_id):
+    car = Car.query.filter_by(id=car_id).first() or abort(404)
+    db.session.delete(car)
+    db.session.commit()
     return jsonify(car.to_dict())
 
 
