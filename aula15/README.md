@@ -56,6 +56,11 @@ Uma **firma** vende **`produtos`** de limpeza, e deseja melhor controlar os `pro
     <!-- ![image info](./MER.png) -->
     <p align="center"><img src="MER.png" alt="drawing" width="300"/></p>
 - ### Crie o Mapeamento MER
+    - Category:
+
+        | id | name |
+        |:--:|:----:|
+        |    |      |
     - Product:
 
         | id | name | price | category_name |
@@ -71,6 +76,11 @@ Uma **firma** vende **`produtos`** de limpeza, e deseja melhor controlar os `pro
         | id | name | addressess | telephones | status | credit_limit |
         |:--:|:----:|------------|------------|--------|--------------|
         |    |      |            |            |        |              |
+    - Product_Order:
+
+        | product | order | amount |
+        |:-------:|:-----:|--------|
+        |         |       |        |
 - ### Faça a Normalização de Dados    
     - Product:
 
@@ -90,17 +100,74 @@ Uma **firma** vende **`produtos`** de limpeza, e deseja melhor controlar os `pro
         |    |      |           |           |
     - Client:
 
-        | id | name | addressess | telephones | status | credit_limit |
-        |:--:|:----:|------------|------------|--------|--------------|
-        |    |      |            |            |        |              |
+        | id | name | telephone_fix | telephone_celular | status | credit_limit |
+        |:--:|:-----|---------------|-------------------|--------|--------------|
+        |    |      |               |                   |        |              |
+    - Address:
 
+        | id | address | client_id |
+        |:--:|:-------:|:---------:|
+        |    |         |           |
+    
     - Product_Order:
 
         | product_id | order_id | amount |
         |:----------:|:--------:|--------|
         |            |          |        |
+
 - ### Crie o Diagrama ER
+<p align="center"><img src="diagrama_er.png" alt="drawing" width="300"/></p>
+
 - ### Crie o SQL correspondente ao Diagrama ER - ### ***(Não precisa executar)***
+```sql
+CREATE DATABASE aula15;
+
+CREATE TABLE category(
+    id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE product(
+    id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    price FLOAT(5,2) NOT NULL,
+    category_id INTEGER NOT NULL,
+    FOREIGN KEY(category_id) REFERENCES category(id) ON DELETE CASCADE
+);
+
+CREATE TABLE client(
+    id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    telephone_fix CHAR(13),
+    telephone_celular CHAR(14),
+    status VARCHAR(6) NOT NULL CHECK(status in ("Good", "Medium", "Bad")),
+    credit_limit FLOAT(10,2)
+);
+
+CREATE TABLE address(
+    id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    address TEXT NOT NULL DEFAULT="undefined",
+    client_id INTEGER NOT NULL,
+    FOREIGN KEY(client_id) REFERENCES client(id) ON DELETE CASCADE
+);
+
+CREATE TABLE order(
+    id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    code INTEGER NOT NULL,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    client_id INTEGER NOT NULL,
+    FOREIGN KEY(client_id) REFERENCES client(id) ON DELETE CASCADE
+);
+
+CREATE TABLE product_order(
+    product_id INTEGER NOT NULL,
+    order_id INTEGER NOT NULL,
+    amount INTEGER NOT NULL,
+    PRIMARY KEY(product_id, order_id),
+    FOREIGN KEY(product_id) REFERENCES product(id) ON DELETE CASCADE,
+    FOREIGN KEY(order_id) REFERENCES order(id) ON DELETE CASCADE
+);
+```
 - ### Faça o Mapeamento das classes para banco de dados com a biblioteca SQLAlchemy
 - ### Crie as rotas da sua API para retornar e receber  informações do banco
 - ### Faça um teste para validar a sua API desenvolvida

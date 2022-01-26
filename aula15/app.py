@@ -1,6 +1,6 @@
+from ast import operator
 from datetime import datetime
 import enum
-from itertools import product
 import os
 from flask import Flask, jsonify, abort, request, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -60,7 +60,7 @@ class Order(db.Model, SerializerMixin):
     client_id = db.Column(db.Integer, db.ForeignKey(
         'client.id', ondelete="CASCADE"), nullable=False)
     client = db.relationship(
-        'Client', back_populates=db.backref('order', lazy=True))
+        'Client', back_populates='order')
     products = db.relationship("ProductOrder", backref="orders")
 
     def __repr__(self):
@@ -98,7 +98,7 @@ def create_db():
 
 class ProductResource(Resource):
     def get(self):
-        products = Product.query.all() or abort(204)
+        products = Product.query.all() or abort(404, description="Resource not found")
         return jsonify(
             {"products": [product.to_dict() for product in products]}
         )
@@ -106,7 +106,7 @@ class ProductResource(Resource):
 
 class ProductItemResource(Resource):
     def get(self, product_id):
-        product = Product.query.filter_by(id=product_id).first() or abort(404)
+        product = Product.query.filter_by(id=product_id).first() or abort(404, description=f"Resource id {product_id} not found")
         return jsonify(product.to_dict())
 
 
@@ -114,22 +114,18 @@ api.add_resource(ProductResource, "/product/")
 api.add_resource(ProductItemResource, "/product/<product_id>")
 
 
-def has_no_empty_params(rule):
-    defaults = rule.defaults if rule.defaults is not None else ()
-    arguments = rule.arguments if rule.arguments is not None else ()
-    return len(defaults) >= len(arguments)
-
-
-@app.route("/site-map")
-def site_map():
-    links = []
+@app.cli.command()
+def routes():
+    'Display registered routes'
+    rules = []
     for rule in app.url_map.iter_rules():
-        # Filter out rules we can't navigate to in a browser
-        # and rules that require parameters
-        if "GET" in rule.methods and has_no_empty_params(rule):
-            url = url_for(rule.endpoint, **(rule.defaults or {}))
-            links.append((url, rule.endpoint))
-    # links is now a list of url, endpoint tuples
+        methods = ','.join(sorted(rule.methods))
+        rules.append((rule.endpoint, methods, str(rule)))
+
+    sort_by_rule = operator.itemgetter(2)
+    for endpoint, methods, rule in sorted(rules, key=sort_by_rule):
+        route = '{:50s} {:25s} {}'.format(endpoint, methods, rule)
+        print(route)
 
 
 if __name__ == '__main__':
