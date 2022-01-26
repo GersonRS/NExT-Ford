@@ -1,9 +1,9 @@
-from flask import Flask, jsonify, abort, make_response, request
+from flask import Flask, jsonify, abort, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost:3306/aula13'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymsql://root:@localhost:3306/aula13'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.txt'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
@@ -17,7 +17,7 @@ def create_db():
 
 @app.route('/cars', methods=['GET'])
 def list_cars():
-    cars = Car.query.all() or abort(404)
+    cars = Car.query.all()
     return jsonify(
         {"cars": [car.to_dict() for car in cars]}
     )
@@ -39,15 +39,16 @@ def create_car():
     return jsonify({"success": True, "response": "Car added"})
 
 
-@app.route('/cars/<car_id>', methods=['GET'])
+@app.route('/cars/<int:car_id>', methods=['GET'])
 def retrive_car(car_id):
     car = Car.query.filter_by(id=car_id).first() or abort(404)
     return jsonify(car.to_dict())
 
 
-@app.route('/cars/<car_id>', methods=['PUT'])
+@app.route('/cars/<car_id>', methods=['PUT', 'PATCH'])
 def update_car(car_id):
-    car = Car.query.filter_by(id=car_id).first() or abort(404)
+    car = Car.query.filter_by(id=car_id).one() or abort(404)
+    # SELECT * FROM car WHERE id = 'car_id' limit = 1;
 
     data = request.get_json()
 
@@ -80,7 +81,7 @@ class Car(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     brand = db.Column(db.String(100), nullable=False)
     model = db.Column(db.String(100), nullable=False)
-    year = db.Column(db.String(100))
+    year = db.Column(db.String(4))
     value = db.Column(db.Float(2))
 
     def __init__(self, brand, model, year, value):
