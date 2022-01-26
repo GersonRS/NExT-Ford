@@ -1,14 +1,15 @@
-from ast import operator
+from ast import arg, operator
 from datetime import datetime
 import enum
 import os
-from flask import Flask, jsonify, abort, request, url_for
+from flask import Flask, jsonify, abort
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, reqparse
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:@localhost:3306/aula15'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 api = Api(app)
 
@@ -20,14 +21,14 @@ class StatusChoices(enum.Enum):
     MEDIUM = 'Medium'
     BAD = 'Bad'
 
-
 class Product(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     price = db.Column(db.Float(2), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey(
         'category.id', ondelete="CASCADE"), nullable=False)
-    category = db.relationship('Category', back_populates='products')
+    category = db.relationship(
+        'Category', back_populates='products', lazy=True)
     orders = db.relationship("ProductOrder", backref="products")
 
     def __repr__(self):
@@ -71,7 +72,8 @@ class Client(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     address = db.Column(db.String(50))
-    telephone = db.Column(db.String(11))
+    telephone_fix = db.Column(db.String(13))
+    telephone_celular = db.Column(db.String(14))
     status = db.Column(db.Enum(StatusChoices))
     credit_limit = db.Column(db.Float(2))
 
@@ -102,31 +104,45 @@ class ProductResource(Resource):
         return jsonify(
             {"products": [product.to_dict() for product in products]}
         )
+    def post(self):
+        pass
+    def put(self):
+        pass
+    def delete(self):
+        pass
 
 
 class ProductItemResource(Resource):
     def get(self, product_id):
-        product = Product.query.filter_by(id=product_id).first() or abort(404, description=f"Resource id {product_id} not found")
+        product = Product.query.filter_by(id=product_id).first() or abort(
+            404, description=f"Resource id {product_id} not found")
         return jsonify(product.to_dict())
 
 
+class ClientResource(Resource):
+    def get(self):
+        clients = Client.query.all() or abort(404, description="Resource not found")
+        return jsonify(
+            {"clients": [client.to_dict() for client in clients]}
+        )
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('name', type=ascii, help='recurso não enviado, prfv mande um nome')
+        args = parser.parse_args()
+
+        client = Client(**args)
+        db.session.add(client)
+        db.session.commit()
+
+        return jsonify({"success": True, "response": "client added"})
+        
+    def put(self):
+        pass
+    def delete(self):
+        pass
+
 api.add_resource(ProductResource, "/product/")
-api.add_resource(ProductItemResource, "/product/<product_id>")
-
-
-@app.cli.command()
-def routes():
-    'Display registered routes'
-    rules = []
-    for rule in app.url_map.iter_rules():
-        methods = ','.join(sorted(rule.methods))
-        rules.append((rule.endpoint, methods, str(rule)))
-
-    sort_by_rule = operator.itemgetter(2)
-    for endpoint, methods, rule in sorted(rules, key=sort_by_rule):
-        route = '{:50s} {:25s} {}'.format(endpoint, methods, rule)
-        print(route)
-
+api.add_resource(ProductItemResource, "/product/<int:product_id>")
 
 if __name__ == '__main__':
     app.run(debug=True)

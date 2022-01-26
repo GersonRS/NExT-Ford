@@ -169,6 +169,7 @@ CREATE TABLE product_order(
 );
 ```
 - ### Faça o Mapeamento das classes para banco de dados com a biblioteca SQLAlchemy
+    - feito
 - ### Crie as rotas da sua API para retornar e receber informações do banco, de acordo com as <a href="#funcionalidades-da-api">Funcionalidades da API</a>
 - ### Faça um teste para validar a sua API desenvolvida
 
