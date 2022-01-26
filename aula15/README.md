@@ -169,16 +169,16 @@ CREATE TABLE product_order(
 );
 ```
 - ### Faça o Mapeamento das classes para banco de dados com a biblioteca SQLAlchemy
-- ### Crie as rotas da sua API para retornar e receber  informações do banco
+- ### Crie as rotas da sua API para retornar e receber informações do banco, de acordo com as <a href="#funcionalidades-da-api">Funcionalidades da API</a>
 - ### Faça um teste para validar a sua API desenvolvida
 
 ## Template da aplicação
 
 Para ajudar nesse desafio, criei para vocês um modelo que pode ser utilizado como um template, e este pode ser baixado no Github.
 
-O template está disponível na seguinte url: **[Acessar Template](https://github.com/GersonRS/template-desafio-next-java)**
+O template está disponível na seguinte url: **[Acessar Template](https://github.com/GersonRS/)**
 
-**Dica**: Caso não saiba utilizar repositórios do Github como template, tem um guia em **[nosso FAQ](https://github.com/GersonRS/template-desafio-next-java/blob/main/README.md#guides).**
+**Dica**: Caso não saiba utilizar repositórios do Github como template, tem um guia em **[nosso FAQ](https://github.com/GersonRS/).**
 
 Agora navegue até a pasta criada e abra no Visual Studio Code, lembre-se de executar o pip para atualizar todas as dependências.
 
