@@ -1,11 +1,11 @@
-from ast import arg, operator
-from datetime import datetime
 import enum
 import os
-from flask import Flask, jsonify, abort
+from datetime import datetime
+
+from flask import Flask, abort, jsonify
+from flask_restful import Api, Resource, reqparse
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
-from flask_restful import Resource, Api, reqparse
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:@localhost:3306/aula15'
@@ -20,6 +20,7 @@ class StatusChoices(enum.Enum):
     GOOD = 'Good'
     MEDIUM = 'Medium'
     BAD = 'Bad'
+
 
 class Product(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -104,10 +105,13 @@ class ProductResource(Resource):
         return jsonify(
             {"products": [product.to_dict() for product in products]}
         )
+
     def post(self):
         pass
+
     def put(self):
         pass
+
     def delete(self):
         pass
 
@@ -125,9 +129,11 @@ class ClientResource(Resource):
         return jsonify(
             {"clients": [client.to_dict() for client in clients]}
         )
+
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('name', type=ascii, help='recurso não enviado, prfv mande um nome')
+        parser.add_argument('name', type=ascii,
+                            help='recurso não enviado, prfv mande um nome')
         args = parser.parse_args()
 
         client = Client(**args)
@@ -135,11 +141,13 @@ class ClientResource(Resource):
         db.session.commit()
 
         return jsonify({"success": True, "response": "client added"})
-        
+
     def put(self):
         pass
+
     def delete(self):
         pass
+
 
 api.add_resource(ProductResource, "/product/")
 api.add_resource(ProductItemResource, "/product/<int:product_id>")

@@ -177,9 +177,9 @@ CREATE TABLE product_order(
 
 Para ajudar nesse desafio, criei para vocês um modelo que pode ser utilizado como um template, e este pode ser baixado no Github.
 
-O template está disponível na seguinte url: **[Acessar Template](https://github.com/GersonRS/)**
+O template está disponível na seguinte url: **[Acessar Template](https://github.com/GersonRS/NExT-Ford/blob/main/aula15/app.py)**
 
-**Dica**: Caso não saiba utilizar repositórios do Github como template, tem um guia em **[nosso FAQ](https://github.com/GersonRS/).**
+**Dica**: Caso não saiba utilizar repositórios do Github como template, tem um guia em **[nosso FAQ](https://github.com/GersonRS/NExT-Ford/blob/main/aula15/README.md).**
 
 Agora navegue até a pasta criada e abra no Visual Studio Code, lembre-se de executar o pip para atualizar todas as dependências.
 
