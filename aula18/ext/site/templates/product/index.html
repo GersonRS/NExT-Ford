@@ -1,0 +1,50 @@
+{% extends "layout/base.html" %} {% block main %}
+<table class="table">
+    <thead>
+        <tr>
+            <th><abbr title="Identification">id</abbr></th>
+            <th>name</th>
+            <th><abbr title="Category">category</abbr></th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th><abbr title="Identification">id</abbr></th>
+            <th>name</th>
+            <th><abbr title="Category">category</abbr></th>
+            <th>Actions</th>
+        </tr>
+    </tfoot>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <th>{{product.id}}</th>
+            <td>{{product.name}}</td>
+            <td>{{product.category_id}}</td>
+            <td>
+                <div class="field has-addons">
+                    <p class="control">
+                        <a class="button">
+                            <span class="icon is-small">
+                                <i class="far fa-edit"></i>
+                            </span>
+                        </a>
+                    </p>
+                    <p class="control">
+                        <a class="button">
+                            <span class="icon is-small"
+                                ><i class="far fa-trash-alt"></i
+                            ></span>
+                        </a>
+                    </p>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a class="button is-link" href="{{url_for('product_create')}}" role="button"
+    >Create a new Product</a
+>
+{% endblock %}

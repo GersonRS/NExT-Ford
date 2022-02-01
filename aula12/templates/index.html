@@ -20,11 +20,23 @@
             <td>{{ carro.modelo }}</td>
             <td>{{ carro.ano }}</td>
             <td>{{ carro.valor }}</td>
-            <td><a class="btn btn-primary" href="/atualizar/{{carro.id}}" role='button'>Atualizar</a></td>
+            <td>
+                <a
+                    class="btn btn-primary"
+                    href="/atualizar/{{carro.id}}"
+                    role="button"
+                    >Atualizar</a
+                >
+            </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
-<a class="btn btn-primary" href="/novo" role='button'>Novo</a>
+<select name="category_id">
+    <option value="{category.id}">pizza</option>
+    <option>sandubas</option>
+</select>
+
+<a class="btn btn-primary" href="/novo" role="button">Novo</a>
 {% endblock %}
