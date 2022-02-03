@@ -1,0 +1,37 @@
+{% extends "layout/base.html" %} {% block main %}
+<form action="{{url_for('restapi.productlistapi')}}" method="post">
+    <fieldset>
+        <div class="field">
+            <label class="label">Name</label>
+            <div class="control">
+                <input class="input" type="text" name="name" placeholder="Name" />
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Price</label>
+            <div class="control">
+                <input class="input" type="text" name="price" placeholder="0.00" />
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Subject</label>
+            <div class="control">
+                <div class="select">
+                    <select name="category_id">
+                        {% for category in categories %}
+                        <option value="{{category.id}}">{{category.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-grouped">
+            <div class="control">
+                <button class="button is-link" type="submit">Submit</button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}
