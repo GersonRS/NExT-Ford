@@ -15,3 +15,8 @@ cli.init_app(app)
 site.init_app(app)
 api.init_app(app)
 auth.init_app(app)
+
+
+@app.before_first_request
+def init_db():
+    database.db.create_all()
