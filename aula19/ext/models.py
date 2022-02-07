@@ -1,10 +1,10 @@
-from aula19.ext.database import db
-
-from sqlalchemy_serializer import SerializerMixin
 import enum
 from datetime import datetime
-from flask import request, url_for
-from requests import post
+
+from sqlalchemy_serializer import SerializerMixin
+
+from aula19.ext.database import db
+
 
 class StatusChoices(enum.Enum):
     GOOD = 'Good'
